@@ -8,81 +8,6 @@
 // There is on-going work to provide a comprehensive typed definition for this component.
 // See https://github.com/DefinitelyTyped/DefinitelyTyped/pull/28733
 
-declare class ApexCharts {
-  constructor(el: any, options: any)
-  render(): Promise<void>
-  updateOptions(
-    options: any,
-    redrawPaths?: boolean,
-    animate?: boolean,
-    updateSyncedCharts?: boolean
-  ): Promise<void>
-  updateSeries(
-    newSeries: ApexAxisChartSeries | ApexNonAxisChartSeries,
-    animate?: boolean
-  ): Promise<void>
-  appendSeries(
-    newSeries: ApexAxisChartSeries | ApexNonAxisChartSeries,
-    animate?: boolean
-  ): Promise<void>
-  appendData(data: any[], overwriteInitialSeries?: boolean): void
-  toggleSeries(seriesName: string): any
-  showSeries(seriesName: string): void
-  hideSeries(seriesName: string): void
-  resetSeries(): void
-  zoomX(min: number, max: number): void
-  toggleDataPointSelection(seriesIndex: number, dataPointIndex?: number): any
-  destroy(): void
-  setLocale(localeName: string): void
-  paper(): void
-  addXaxisAnnotation(options: any, pushToMemory?: boolean, context?: any): void
-  addYaxisAnnotation(options: any, pushToMemory?: boolean, context?: any): void
-  addPointAnnotation(options: any, pushToMemory?: boolean, context?: any): void
-  removeAnnotation(id: string, options?: any): void
-  clearAnnotations(options?: any): void
-  dataURI(options?: { scale?: number, width?: number }): Promise<{ imgURI: string } | { blob: Blob }>
-  static exec(chartID: string, fn: string, ...args: Array<any>): any
-  static getChartByID(chartID: string): ApexCharts|undefined
-  static initOnLoad(): void
-  exports: {
-    cleanup(): string
-    svgUrl(): string
-    dataURI(options?: { scale?: number, width?: number }): Promise<{ imgURI: string } | { blob: Blob }>
-    exportToSVG(): void
-    exportToPng(): void
-    exportToCSV(options?: { series?: any, fileName?: string, columnDelimiter?: string, lineDelimiter?: string }): void
-    getSvgString(scale?: number): void
-    triggerDownload(href: string, filename?: string, ext?: string): void
-  }
-}
-
-declare module ApexCharts {
-  export interface ApexOptions {
-    annotations?: ApexAnnotations
-    chart?: ApexChart
-    colors?: any[]
-    dataLabels?: ApexDataLabels
-    fill?: ApexFill
-    forecastDataPoints?: ApexForecastDataPoints
-    grid?: ApexGrid
-    labels?: string[]
-    legend?: ApexLegend
-    markers?: ApexMarkers
-    noData?: ApexNoData
-    plotOptions?: ApexPlotOptions
-    responsive?: ApexResponsive[]
-    series?: ApexAxisChartSeries | ApexNonAxisChartSeries
-    states?: ApexStates
-    stroke?: ApexStroke
-    subtitle?: ApexTitleSubtitle
-    theme?: ApexTheme
-    title?: ApexTitleSubtitle
-    tooltip?: ApexTooltip
-    xaxis?: ApexXAxis
-    yaxis?: ApexYAxis | ApexYAxis[]
-  }
-}
-
 type ApexDropShadow = {
   enabled?: boolean
   top?: number
@@ -130,16 +55,16 @@ type ApexChart = {
     beforeMount?(chart: any, options?: any): void
     mounted?(chart: any, options?: any): void
     updated?(chart: any, options?: any): void
-    mouseMove?(e: any, chart?: any, options?: any): void
-    mouseLeave?(e: any, chart?: any, options?: any): void
-    click?(e: any, chart?: any, options?: any): void
-    xAxisLabelClick?(e: any, chart?: any, options?: any): void
+    mouseMove?(event: any, chart?: any, options?: any): void
+    mouseLeave?(event: any, chart?: any, options?: any): void
+    click?(event: any, chart?: any, options?: any): void
+    xAxisLabelClick?(event: any, chart?: any, options?: any): void
     legendClick?(chart: any, seriesIndex?: number, options?: any): void
-    markerClick?(e: any, chart?: any, options?: any): void
+    markerClick?(event: any, chart?: any, options?: any): void
     selection?(chart: any, options?: any): void
-    dataPointSelection?(e: any, chart?: any, options?: any): void
-    dataPointMouseEnter?(e: any, chart?: any, options?: any): void
-    dataPointMouseLeave?(e: any, chart?: any, options?: any): void
+    dataPointSelection?(event: any, chart?: any, options?: any): void
+    dataPointMouseEnter?(event: any, chart?: any, options?: any): void
+    dataPointMouseLeave?(event: any, chart?: any, options?: any): void
     beforeZoom?(chart: any, options?: any): void
     beforeResetZoom?(chart: any, options?: any): void
     zoomed?(chart: any, options?: any): void
@@ -181,7 +106,7 @@ type ApexChart = {
         title?: string
         index?: number
         class?: string
-        click?(chart?: any, options?: any, e?: any): any
+        click?(chart?: any, options?: any, event?: any): any
       }[]
     }
     export?: {
@@ -861,8 +786,8 @@ type ApexMarkers = {
   offsetX?: number
   offsetY?: number
   showNullDataPoints?: boolean
-  onClick?(e?: any): void
-  onDblClick?(e?: any): void
+  onClick?(event?: any): void
+  onDblClick?(event?: any): void
   hover?: {
     size?: number
     sizeOffset?: number
@@ -1229,6 +1154,81 @@ type ApexTheme = {
   }
 }
 
+declare module ApexCharts {
+  export interface ApexOptions {
+    annotations?: ApexAnnotations
+    chart?: ApexChart
+    colors?: any[]
+    dataLabels?: ApexDataLabels
+    fill?: ApexFill
+    forecastDataPoints?: ApexForecastDataPoints
+    grid?: ApexGrid
+    labels?: string[]
+    legend?: ApexLegend
+    markers?: ApexMarkers
+    noData?: ApexNoData
+    plotOptions?: ApexPlotOptions
+    responsive?: ApexResponsive[]
+    series?: ApexAxisChartSeries | ApexNonAxisChartSeries
+    states?: ApexStates
+    stroke?: ApexStroke
+    subtitle?: ApexTitleSubtitle
+    theme?: ApexTheme
+    title?: ApexTitleSubtitle
+    tooltip?: ApexTooltip
+    xaxis?: ApexXAxis
+    yaxis?: ApexYAxis | ApexYAxis[]
+  }
+}
+
+declare class ApexCharts {
+  constructor(el: HTMLElement, options: ApexCharts.ApexOptions)
+  render(): Promise<void>
+  updateOptions(
+    options: ApexCharts.ApexOptions,
+    redrawPaths?: boolean,
+    animate?: boolean,
+    updateSyncedCharts?: boolean
+  ): Promise<void>
+  updateSeries(
+    newSeries: ApexAxisChartSeries | ApexNonAxisChartSeries,
+    animate?: boolean
+  ): Promise<void>
+  appendSeries(
+    newSeries: ApexAxisChartSeries | ApexNonAxisChartSeries,
+    animate?: boolean
+  ): Promise<void>
+  appendData(newData: any[], overwriteInitialSeries?: boolean): void
+  toggleSeries(seriesName: string): any
+  showSeries(seriesName: string): void
+  hideSeries(seriesName: string): void
+  resetSeries(): void
+  zoomX(min: number, max: number): void
+  toggleDataPointSelection(seriesIndex: number, dataPointIndex?: number): any
+  destroy(): void
+  setLocale(localeName: string): void
+  paper(): void
+  addXaxisAnnotation(options: XAxisAnnotations, pushToMemory?: boolean, context?: any): void
+  addYaxisAnnotation(options: YAxisAnnotations, pushToMemory?: boolean, context?: any): void
+  addPointAnnotation(options: PointAnnotations, pushToMemory?: boolean, context?: any): void
+  removeAnnotation(id: string, context?: any): void
+  clearAnnotations(context?: any): void
+  dataURI(options?: { scale?: number, width?: number }): Promise<{ imgURI: string } | { blob: Blob }>
+  static exec(chartID: string, fn: string, ...args: Array<any>): any
+  static getChartByID(chartID: string): ApexCharts | undefined
+  static initOnLoad(): void
+  exports: {
+    cleanup(): string
+    svgUrl(): string
+    dataURI(options?: { scale?: number, width?: number }): Promise<{ imgURI: string } | { blob: Blob }>
+    exportToSVG(): void
+    exportToPng(): void
+    exportToCSV(options?: { series?: any, fileName?: string, columnDelimiter?: string, lineDelimiter?: string }): void
+    getSvgString(scale?: number): void
+    triggerDownload(href: string, filename?: string, ext?: string): void
+  }
+}
+
 declare module 'apexcharts' {
-  export = ApexCharts
+  export = ApexCharts;
 }
